@@ -1,5 +1,17 @@
 # Changelog
 
+## [16.1.0](https://github.com/Arize-ai/phoenix/compare/arize-phoenix-v16.0.0...arize-phoenix-v16.1.0) (2026-05-23)
+
+
+### Features
+
+* **agents:** adds skill for creating a new eval dataset, a new dat... ([#13249](https://github.com/Arize-ai/phoenix/issues/13249)) ([1989790](https://github.com/Arize-ai/phoenix/commit/19897909a33e46b22db5fa9c6a9a7fd347d7a018))
+
+
+### Documentation
+
+* **skills:** weekly audit — 2026-05-20 ([#13363](https://github.com/Arize-ai/phoenix/issues/13363)) ([1de6821](https://github.com/Arize-ai/phoenix/commit/1de682108b6267e64a358d5f41b53070ebc377c9))
+
 ## [16.0.0](https://github.com/Arize-ai/phoenix/compare/arize-phoenix-v15.12.0...arize-phoenix-v16.0.0) (2026-05-21)
 
 
