@@ -13,6 +13,7 @@ import {
   type AgentCapabilities,
   type AgentCapabilityKey,
 } from "@phoenix/agent/extensions/capabilities";
+import type { PendingCodeEvaluatorEdit } from "@phoenix/agent/tools/codeEvaluatorDraft";
 import type { PendingElicitation } from "@phoenix/agent/tools/elicit";
 import type { PendingPromptEdit } from "@phoenix/agent/tools/playgroundPrompt";
 import { getDefaultInvocationConfig } from "@phoenix/pages/playground/providerAdapters";
@@ -244,6 +245,15 @@ export interface AgentState extends AgentProps {
     toolCallId: string,
     edit: PendingPromptEdit | null
   ) => void;
+
+  // -- Code-evaluator draft edit approvals advertised by edit_code_evaluator_draft tool calls --
+  pendingCodeEvaluatorEditsByToolCallId: Partial<
+    Record<string, PendingCodeEvaluatorEdit>
+  >;
+  setPendingCodeEvaluatorEdit: (
+    toolCallId: string,
+    edit: PendingCodeEvaluatorEdit | null
+  ) => void;
 }
 
 /**
@@ -344,6 +354,7 @@ export const createAgentStore = (initialProps?: Partial<AgentProps>) => {
     routeContexts: [],
     mountedContexts: {},
     pendingPromptEditsByToolCallId: {},
+    pendingCodeEvaluatorEditsByToolCallId: {},
     setIsOpen: (isOpen) => {
       set({ isOpen }, false, { type: "setIsOpen" });
     },
@@ -745,6 +756,22 @@ export const createAgentStore = (initialProps?: Partial<AgentProps>) => {
       );
     },
 
+    setPendingCodeEvaluatorEdit: (toolCallId, edit) => {
+      set(
+        (state) => {
+          const next = { ...state.pendingCodeEvaluatorEditsByToolCallId };
+          if (edit) {
+            next[toolCallId] = edit;
+          } else {
+            delete next[toolCallId];
+          }
+          return { pendingCodeEvaluatorEditsByToolCallId: next };
+        },
+        false,
+        { type: "setPendingCodeEvaluatorEdit" }
+      );
+    },
+
     ...initialProps,
   });
 
@@ -798,6 +825,7 @@ export const createAgentStore = (initialProps?: Partial<AgentProps>) => {
           },
           capabilities: migratedCapabilities,
           pendingPromptEditsByToolCallId: {},
+          pendingCodeEvaluatorEditsByToolCallId: {},
         } as AgentState;
       },
       partialize: (state) => ({
